@@ -1,59 +1,22 @@
+/* A program that prints the image of the surjective map 
+ * $B_3(3) -> End_{O(3)}((\mathbb{R}^{3})^{\otimes 3})$
+ * as a flat 2D matrix expressed in the standard basis of 
+ * $\mathbb{R}^{3}$.
+ *
+ * Technically, the output of the program is a 2D matrix where 
+ * each cell returns a list of indices. 
+ * 
+ * For each cell of the matrix of 
+ * $End_{O(3)}((\mathbb{R}^{3})^{\otimes 3})$, we want to take
+ * the list of indices and replace it by a sum of parameters
+ * where the indexing set for the sum is this list. 
+ */
+
 #include <iostream>
 #include <vector>
 #include "brauer.h"
 
-int row_convert(int choice, int a, int b, int c){
-	switch (choice){
-		case 1: case 2: case 3: case 4: case 5: case 6:
-			return reindex.at(std::make_pair(a,b)) + c - 1;
-		case 7: case 11: case 15:
-			return reindex.at(std::make_pair(a,a)) + b - 1;
-		case 8: case 10: case 14:
-			return reindex.at(std::make_pair(a,b)) + b - 1;
-		case 9: case 12: case 13:
-			return reindex.at(std::make_pair(a,b)) + a - 1;
-		default:
-			return -1;
-	}
-}
-
-int col_convert(int choice, int a, int b, int c){
-	switch (choice){
-		case 1:
-			return reindex.at(std::make_pair(a,b)) + c - 1;
-		case 2:
-			return reindex.at(std::make_pair(b,a)) + c - 1;
-		case 3:
-			return reindex.at(std::make_pair(c,a)) + b - 1;
-		case 4:
-			return reindex.at(std::make_pair(a,c)) + b - 1;
-		case 5:
-			return reindex.at(std::make_pair(c,b)) + a - 1;
-		case 6:
-			return reindex.at(std::make_pair(b,c)) + a - 1;
-		case 7: case 13:
-			return reindex.at(std::make_pair(c,c)) + b - 1;
-		case 8:
-			return reindex.at(std::make_pair(a,c)) + c - 1;
-		case 9: case 15:
-			return reindex.at(std::make_pair(c,b)) + c - 1;
-		case 10:
-			return reindex.at(std::make_pair(c,c)) + a - 1;
-		case 11: case 12:
-			return reindex.at(std::make_pair(b,c)) + c - 1;
-		case 14:
-			return reindex.at(std::make_pair(c,a)) + c - 1;
-		default:
-			return -1;
-	}
-}
-
 int main() {
-	const int MAX_CHOICES = 15;
-	const int n = 3;
-	const int k = 3;
-	const int DIM = pow(n, k) - 1;
-
 	//Step 1: Prepare the memory of the 3d matrix;
 	std::vector<std::vector<std::vector<int>>> vec_3d;
 	for(int i = 0; i <= DIM; ++i){
@@ -70,7 +33,8 @@ int main() {
 		for(int a = 1; a <= n; ++a){
 			for(int b = 1; b <= n; ++b){
 				for(int c = 1; c <= n; ++c){
-					//1: Based on choice (and a,b,c), lookup correct cell entry.	
+					//1: Based on choice (and a,b,c), 
+					//lookup correct cell entry.	
 					int i = row_convert(choice, a, b, c);
 					int j = col_convert(choice, a, b, c);
 					//2: Push_back into correct place.
